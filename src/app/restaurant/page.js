@@ -10,22 +10,18 @@ const Restaurant = () => {
   const [login, setLogin] = useState(true);
 
   return (
-    <>
-      <div className="container">
-        <RestaurantHeader />
-        <h1>Restaurant Login/Signup Page</h1>
-        {login ? <RestaurantLogin /> : <RestaurantSignUp />}
+    <div className="container">
+      <RestaurantHeader />
 
-        <div>
-          <button className="button-link" onClick={() => setLogin(!login)}>
-            {login
-              ? "Do not have account? SignUp"
-              : "Aleready have Account? Login"}
-          </button>
-        </div>
-      </div>
+      <h1>Restaurant Login/Signup Page</h1>
+      {login ? <RestaurantLogin /> : <RestaurantSignUp />}
+
+      <button className="button-link" onClick={() => setLogin(!login)}>
+        {login ? "Do not have account? SignUp" : "Aleready have Account? Login"}
+      </button>
+
       <Footer />
-    </>
+    </div>
   );
 };
 
