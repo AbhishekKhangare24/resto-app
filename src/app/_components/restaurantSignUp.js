@@ -55,7 +55,7 @@ const RestaurantSignUp = () => {
           />
         </div>
         <div className="input-wrapper">
-          <button className="button">Login</button>
+          <button className="button">Sign Up</button>
         </div>
       </div>
     </>
