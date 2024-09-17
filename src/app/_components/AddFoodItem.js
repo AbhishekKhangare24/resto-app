@@ -5,9 +5,18 @@ const AddFoodItem = () => {
   const [price, setPrice] = useState("");
   const [path, setPath] = useState("");
   const [description, setDescription] = useState("");
+  const [error, setError] = useState(false);
 
   const handleAddFoodItem = async () => {
     console.log(name, price, path, description);
+
+    if (!name || !path || !description) {
+      setError(true);
+      return false;
+    } else {
+      setError(false);
+    }
+
     let resto_id;
     const restaurantData = JSON.parse(localStorage.getItem("restaurantUser"));
 
@@ -28,6 +37,8 @@ const AddFoodItem = () => {
     response = await response.json();
     if (response.success) {
       alert("Food item added");
+    } else {
+      alert("Food item not added");
     }
   };
 
@@ -42,6 +53,9 @@ const AddFoodItem = () => {
           value={name}
           onChange={(e) => setName(e.target.value)}
         />
+        {error && !name && (
+          <span className="input-error">Please enter valid name</span>
+        )}
       </div>
 
       <div className="input-wrapper">
@@ -52,6 +66,9 @@ const AddFoodItem = () => {
           value={price}
           onChange={(e) => setPrice(e.target.value)}
         />
+        {error && !price && (
+          <span className="input-error">Please enter valid price</span>
+        )}
       </div>
 
       <div className="input-wrapper">
@@ -62,6 +79,9 @@ const AddFoodItem = () => {
           value={path}
           onChange={(e) => setPath(e.target.value)}
         />
+        {error && !path && (
+          <span className="input-error">Please enter valid path</span>
+        )}
       </div>
       <div className="input-wrapper">
         <input
@@ -71,6 +91,9 @@ const AddFoodItem = () => {
           value={description}
           onChange={(e) => setDescription(e.target.value)}
         />
+        {error && !description && (
+          <span className="input-error">Please enter valid description</span>
+        )}
       </div>
       <div className="input-wrapper">
         <button className="button" onClick={handleAddFoodItem}>
