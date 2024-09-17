@@ -1,11 +1,17 @@
+"use client";
 import RestaurantHeader from "@/app/_components/RestaurantHeader";
+import AddFoodItem from "@/app/_components/AddFoodItem";
 import "./../style.css";
+import { useState } from "react";
 
 const Dashboard = () => {
+  const [addItem, setAddItem] = useState(false);
   return (
     <div>
       <RestaurantHeader />
-      <h1>Welcome to dashboard</h1>
+      <button onClick={() => setAddItem(true)}>Add Food</button>
+      <button onClick={() => setAddItem(false)}>Dashboard</button>
+      {addItem ? <AddFoodItem /> : <h1>Restaurant dashboard</h1>}
     </div>
   );
 };
