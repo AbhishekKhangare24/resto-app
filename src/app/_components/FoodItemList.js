@@ -1,4 +1,28 @@
+import { useEffect, useState } from "react";
+
 const FoodItemList = () => {
+  const [foodItems, setFoodItems] = useState();
+  useEffect(() => {
+    loadFoodItems();
+  }, []);
+
+  const loadFoodItems = async () => {
+    const restaurantData = JSON.parse(localStorage.getItem("restaurantUser"));
+    const resto_id = restaurantData._id;
+
+    let response = await fetch(
+      `http://localhost:3000/api/restaurant/foods/${resto_id}`
+    );
+    response = await response.json();
+    if (response.success) {
+      setFoodItems(response.result);
+    } else {
+      alert("food item list not loading");
+    }
+  };
+
+  console.log(foodItems);
+
   return (
     <div>
       <h1>Food Items</h1>
@@ -14,28 +38,23 @@ const FoodItemList = () => {
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <td>1</td>
-            <td>Pizza</td>
-            <td>300</td>
-            <td>Best seller price</td>
-            <td>Image</td>
-            <td>
-              <button>Delete</button>
-              <button>Edit</button>
-            </td>
-          </tr>
-          <tr>
-            <td>1</td>
-            <td>Pizza</td>
-            <td>300</td>
-            <td>Best seller price</td>
-            <td>Image</td>
-            <td>
-              <button>Delete</button>
-              <button>Edit</button>
-            </td>
-          </tr>
+          {foodItems?.map((item, key) => {
+            return (
+              <tr key={key}>
+                <td>{key + 1}</td>
+                <td>{item.name}</td>
+                <td>{item.price}</td>
+                <td>{item.description}</td>
+                <td>
+                  <img src={item.img_path} />
+                </td>
+                <td>
+                  <button>Delete</button>
+                  <button>Edit</button>
+                </td>
+              </tr>
+            );
+          })}
         </tbody>
       </table>
     </div>
