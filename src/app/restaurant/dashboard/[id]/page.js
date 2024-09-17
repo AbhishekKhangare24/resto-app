@@ -13,7 +13,7 @@ const EditFoodItem = (props) => {
 
   useEffect(() => {
     handleLoadFoodItem();
-  });
+  }, []);
 
   const handleLoadFoodItem = async () => {
     let response = await fetch(
@@ -30,19 +30,32 @@ const EditFoodItem = (props) => {
   };
 
   const handleEditFoodItem = async () => {
-    console.log(name, price, path, description);
-
-    if (!name || !path || !description) {
+    if (!name || !price || !path || !description) {
       setError(true);
       return false;
     } else {
       setError(false);
     }
+    console.log(name, price, path, description);
+
+    let response = await fetch(
+      `http://localhost:3000/api/restaurant/foods/edit/${props.params.id}`,
+      {
+        method: "PUT",
+        body: JSON.stringify({ name, price, img_path: path, description }),
+      }
+    );
+    response = await response.json();
+    if (response.success) {
+      router.push("../dashboard");
+    } else {
+      alert("Data is not updated please try again");
+    }
   };
 
   return (
     <div className="container">
-      <h1>Update New Food Item</h1>
+      <h1>Edit Food Items</h1>
       <div className="input-wrapper">
         <input
           type="text"
@@ -96,14 +109,14 @@ const EditFoodItem = (props) => {
       </div>
 
       <div className="input-wrapper">
-        <button className="button" onClick={handleEditFoodItem}>
-          Update Food Item
+        <button className="button" onClick={() => handleEditFoodItem()}>
+          Edit Food Item
         </button>
       </div>
 
       <div className="input-wrapper">
         <button className="button" onClick={() => router.push(`../dashboard`)}>
-          Back to Food Item list
+          Back to Food Items
         </button>
       </div>
     </div>
