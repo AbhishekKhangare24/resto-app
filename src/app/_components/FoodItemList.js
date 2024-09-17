@@ -21,7 +21,20 @@ const FoodItemList = () => {
     }
   };
 
-  console.log(foodItems);
+  const deleteFoodItem = async (id) => {
+    let response = await fetch(
+      `http://localhost:3000/api/restaurant/foods/${id}`,
+      {
+        method: "DELETE",
+      }
+    );
+    response = await response.json();
+    if (response.success) {
+      loadFoodItems();
+    } else {
+      alert("food item not deleted");
+    }
+  };
 
   return (
     <div>
@@ -49,7 +62,9 @@ const FoodItemList = () => {
                   <img src={item.img_path} />
                 </td>
                 <td>
-                  <button>Delete</button>
+                  <button onClick={() => deleteFoodItem(item._id)}>
+                    Delete
+                  </button>
                   <button>Edit</button>
                 </td>
               </tr>
