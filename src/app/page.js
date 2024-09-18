@@ -6,11 +6,13 @@ import Footer from "./_components/Footer";
 
 export default function Home() {
   const [locations, setLocations] = useState([]);
+  const [restaurants, setRestaurants] = useState([]);
   const [selectedLocation, setSelectedLocation] = useState("");
   const [showLocation, setShowLocation] = useState(false);
 
   useEffect(() => {
     loadLocations();
+    loadRestaurants();
   }, []);
 
   const loadLocations = async () => {
@@ -21,12 +23,20 @@ export default function Home() {
     }
   };
 
+  const loadRestaurants = async () => {
+    let response = await fetch("http://localhost:3000/api/customer");
+    response = await response.json();
+    console.log("response ==>", response);
+    if (response.success) {
+      setRestaurants(response.result);
+    }
+  };
+
   const handleListItem = (item) => {
     setSelectedLocation(item);
     setShowLocation(false);
   };
-
-  console.log(locations);
+  console.log(restaurants);
   return (
     <main>
       <CustomerHeader />
@@ -53,6 +63,23 @@ export default function Home() {
             placeholder="Enter food or restaurant name"
           />
         </div>
+      </div>
+
+      <div className="restaurant-list-container">
+        {restaurants.map((item) => (
+          <div className="restaurant-wrapper">
+            <div className="heading-wrapper">
+              <h3>{item.name}</h3>
+              <h5>Contact: {item.contact}</h5>
+            </div>
+            <div className="address-wrapper">
+              <div>{item.city}, </div>
+              <div className="address">
+                {item.address}, Email{item.email}
+              </div>
+            </div>
+          </div>
+        ))}
       </div>
       <Footer />
     </main>
