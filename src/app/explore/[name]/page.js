@@ -7,10 +7,24 @@ const page = (props) => {
   const name = props.params.name;
   const [restaurantDetails, setRestaurantDetails] = useState();
   const [foodItems, setFoodItems] = useState([]);
+  const [cartData, setCartData] = useState();
+  const [cartStorage, setCartStorage] = useState(
+    JSON.parse(localStorage.getItem("cart"))
+  );
+  const [cartIds, setCartIds] = useState(
+    cartStorage
+      ? () =>
+          cartStorage.map((item) => {
+            return item._id;
+          })
+      : []
+  );
 
   useEffect(() => {
     loadRestaurantDetails();
   }, []);
+
+  console.log(cartIds);
 
   const loadRestaurantDetails = async () => {
     const id = props.searchParams.id;
@@ -23,9 +37,16 @@ const page = (props) => {
     }
   };
 
+  const addToCart = (item) => {
+    setCartData(item);
+    let localCartIds = cartIds;
+    localCartIds.push(item._id);
+    setCartIds(localCartIds);
+  };
+
   return (
     <div>
-      <CustomerHeader />
+      <CustomerHeader cartData={cartData} />
       <div className="restaurant-page-banner">
         <h1>{decodeURI(name)}</h1>
       </div>
@@ -37,8 +58,8 @@ const page = (props) => {
       </div>
       <div className="food-item-wrapper">
         {foodItems.length > 0 ? (
-          foodItems.map((item) => (
-            <div className="list-item">
+          foodItems.map((item, id) => (
+            <div className="list-item" key={id}>
               <div>
                 <img style={{ width: 100 }} src={item.img_path} />
               </div>
@@ -46,7 +67,11 @@ const page = (props) => {
                 <div>{item.name}</div>
                 <div>{item.price}</div>
                 <div className="description">{item.description}</div>
-                <button>Add to cart</button>
+                {cartIds.includes(item._id) ? (
+                  <button>Remove From Cart</button>
+                ) : (
+                  <button onClick={() => addToCart(item)}>Add To Cart</button>
+                )}
               </div>
             </div>
           ))
