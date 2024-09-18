@@ -20,11 +20,13 @@ const page = (props) => {
       : []
   );
 
+  const [removeCartData, setRemoveCartData] = useState();
+
+  console.log(cartIds);
+
   useEffect(() => {
     loadRestaurantDetails();
   }, []);
-
-  console.log(cartIds);
 
   const loadRestaurantDetails = async () => {
     const id = props.searchParams.id;
@@ -38,15 +40,23 @@ const page = (props) => {
   };
 
   const addToCart = (item) => {
-    setCartData(item);
     let localCartIds = cartIds;
     localCartIds.push(item._id);
     setCartIds(localCartIds);
+    setCartData(item);
+    setRemoveCartData();
+  };
+
+  const removeFromCart = (id) => {
+    setRemoveCartData(id);
+    var localIds = cartIds.filter((item) => item != id);
+    setCartData();
+    setCartIds(localIds);
   };
 
   return (
     <div>
-      <CustomerHeader cartData={cartData} />
+      <CustomerHeader cartData={cartData} removeCartData={removeCartData} />
       <div className="restaurant-page-banner">
         <h1>{decodeURI(name)}</h1>
       </div>
@@ -68,7 +78,9 @@ const page = (props) => {
                 <div>{item.price}</div>
                 <div className="description">{item.description}</div>
                 {cartIds.includes(item._id) ? (
-                  <button>Remove From Cart</button>
+                  <button onClick={() => removeFromCart(item._id)}>
+                    Remove From Cart
+                  </button>
                 ) : (
                   <button onClick={() => addToCart(item)}>Add To Cart</button>
                 )}
