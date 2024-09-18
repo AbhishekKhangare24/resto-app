@@ -9,10 +9,27 @@ const UserSignUp = () => {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [city, setCity] = useState("");
   const [address, setAddress] = useState("");
-  const [contact, setContact] = useState("");
+  const [mobile, setMobile] = useState("");
 
-  const handleSignUp = () => {
-    console.log(name, email, password, confirmPassword, city, address, contact);
+  const handleSignUp = async () => {
+    console.log(name, email, password, confirmPassword, city, address, mobile);
+    let response = await fetch("http://localhost:3000/api/user", {
+      method: "post",
+      body: JSON.stringify({
+        name,
+        email,
+        password,
+        city,
+        address,
+        mobile,
+      }),
+    });
+    response = await response.json();
+    if (response.success) {
+      alert("user signup done");
+    } else {
+      alert("failed");
+    }
   };
 
   return (
@@ -81,8 +98,8 @@ const UserSignUp = () => {
         <input
           type="text"
           className="input-field"
-          value={contact}
-          onChange={(e) => setContact(e.target.value)}
+          value={mobile}
+          onChange={(e) => setMobile(e.target.value)}
           placeholder="Enter mobile"
         />
       </div>
