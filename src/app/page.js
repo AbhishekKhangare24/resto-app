@@ -34,7 +34,6 @@ export default function Home() {
     }
     let response = await fetch(url);
     response = await response.json();
-    console.log("response ==>", response);
     if (response.success) {
       setRestaurants(response.result);
     }
@@ -45,7 +44,6 @@ export default function Home() {
     setShowLocation(false);
     loadRestaurants({ location: item });
   };
-  console.log(restaurants);
   return (
     <main>
       <CustomerHeader />
@@ -78,7 +76,9 @@ export default function Home() {
       <div className="restaurant-list-container">
         {restaurants.map((item) => (
           <div
-            onClick={() => router.push("explore/" + item.name)}
+            onClick={() =>
+              router.push("explore/" + item.name + "?id=" + item._id)
+            }
             className="restaurant-wrapper"
           >
             <div className="heading-wrapper">
