@@ -3,9 +3,11 @@ import { useState } from "react";
 import CustomerHeader from "../_components/CustomerHeader";
 import Footer from "../_components/Footer";
 import { DELIVERY_CHARGES, TAX } from "../lib/constant";
-import { useRouter } from "next/navigation";
 
 const page = () => {
+  const [userStorage, setUserStorage] = useState(
+    JSON.parse(localStorage.getItem("user"))
+  );
   const [cartStorage, setCartStorage] = useState(
     JSON.parse(localStorage.getItem("cart"))
   );
@@ -17,44 +19,27 @@ const page = () => {
         })
   );
 
-  const router = useRouter();
   console.log(total);
-
-  const orderNow = () => {
-    router.push("/order");
-  };
-
   return (
     <div>
       <CustomerHeader />
 
-      <div className="food-item-wrapper">
-        {cartStorage.length > 0 ? (
-          cartStorage.map((item, id) => (
-            <div className="list-item" key={id}>
-              <div className="list-item-block-1">
-                <img style={{ width: 100 }} src={item.img_path} />
-              </div>
-              <div className="list-item-block-2">
-                <div>{item.name}</div>
-                <div className="description">{item.description}</div>
-                <button onClick={() => removeFromCart(item._id)}>
-                  Remove From Cart
-                </button>
-              </div>
-              <div className="list-item-block-3">Price: {item.price}</div>
-            </div>
-          ))
-        ) : (
-          <h1>No Food Items for this Restaurant</h1>
-        )}
-      </div>
       <div className="total-wrapper">
         <div className="block-1">
+          <h2>User Details</h2>
           <div className="row">
-            <span>Food Charges :</span>
-            <span>{total}</span>
+            <span>Name :</span>
+            <span>{userStorage.name}</span>
           </div>
+          <div className="row">
+            <span>address</span>
+            <span>{userStorage.address}</span>
+          </div>
+          <div className="row">
+            <span>Mobile</span>
+            <span>{userStorage.mobile}</span>
+          </div>
+          <h2>Amount Details</h2>
           <div className="row">
             <span>Tax :</span>
             <span>{total * (TAX / 100)}</span>
@@ -67,9 +52,14 @@ const page = () => {
             <span>Total Amount :</span>
             <span>{total + DELIVERY_CHARGES + total * (TAX / 100)}</span>
           </div>
+          <h2>Payment Methods</h2>
+          <div className="row">
+            <span>Cash on Delivery :</span>
+            <span>{total + DELIVERY_CHARGES + total * (TAX / 100)}</span>
+          </div>
         </div>
         <div className="block-2">
-          <button onClick={() => orderNow()}>Order Now</button>
+          <button>Place your order now</button>
         </div>
       </div>
       <Footer />
