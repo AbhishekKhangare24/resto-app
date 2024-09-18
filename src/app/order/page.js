@@ -4,7 +4,7 @@ import CustomerHeader from "../_components/CustomerHeader";
 import Footer from "../_components/Footer";
 import { DELIVERY_CHARGES, TAX } from "../lib/constant";
 
-const page = () => {
+const Page = () => {
   const [userStorage, setUserStorage] = useState(
     JSON.parse(localStorage.getItem("user"))
   );
@@ -20,6 +20,35 @@ const page = () => {
   );
 
   console.log(total);
+
+  const orderNow = async () => {
+    let user_id = JSON.parse(localStorage.getItem("user"))._id;
+    let cart = JSON.parse(localStorage.getItem("cart"));
+    let foodItemIds = cart.map((item) => item._id).toString();
+    let deliveryBoy_id = "66eaa59d6ccd0b734db24cbf";
+    let resto_id = cart[0].resto_id;
+
+    let collection = {
+      user_id,
+      resto_id,
+      foodItemIds,
+      deliveryBoy_id,
+      status: "confirm",
+      amount: total + DELIVERY_CHARGES + total * (TAX / 100),
+    };
+
+    let response = await fetch("http://localhost:3000/api/order", {
+      method: "POST",
+      body: JSON.stringify(collection),
+    });
+    response = await response.json();
+    if (response.success) {
+      alert("order confirmed");
+    } else {
+      alert("order failed");
+    }
+  };
+
   return (
     <div>
       <CustomerHeader />
@@ -59,7 +88,7 @@ const page = () => {
           </div>
         </div>
         <div className="block-2">
-          <button>Place your order now</button>
+          <button onClick={orderNow}>Place your order now</button>
         </div>
       </div>
       <Footer />
@@ -67,4 +96,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default Page;
