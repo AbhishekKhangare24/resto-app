@@ -21,7 +21,11 @@ const page = () => {
   console.log(total);
 
   const orderNow = () => {
-    router.push("/order");
+    if (JSON.parse(localStorage.getItem("user"))) {
+      router.push("/order");
+    } else {
+      router.push("/user-auth?order=true");
+    }
   };
 
   return (
