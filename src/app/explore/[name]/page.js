@@ -1,5 +1,6 @@
 "use client";
 import CustomerHeader from "@/app/_components/CustomerHeader";
+import Footer from "@/app/_components/Footer";
 import { useEffect, useState } from "react";
 
 const page = (props) => {
@@ -28,22 +29,32 @@ const page = (props) => {
       <div className="restaurant-page-banner">
         <h1>{decodeURI(name)}</h1>
       </div>
-      <div>
-        <h3>{restaurantDetails?.contact}</h3>
-        <h3>{restaurantDetails?.city}</h3>
-        <h3>{restaurantDetails?.address}</h3>
-        <h3>{restaurantDetails?.email}</h3>
+      <div className="detail-wrapper">
+        <h4>Contact :{restaurantDetails?.contact}</h4>
+        <h4>City :{restaurantDetails?.city}</h4>
+        <h4>Address :{restaurantDetails?.address}</h4>
+        <h4>Email :{restaurantDetails?.email}</h4>
       </div>
-      <div>
-        {foodItems.map((item) => (
-          <div>
-            <div>{item.name}</div>
-            <div>{item.price}</div>
-            <div>{item.description}</div>
-            <img style={{ width: 100 }} src={item.img_path} />
-          </div>
-        ))}
+      <div className="food-item-wrapper">
+        {foodItems.length > 0 ? (
+          foodItems.map((item) => (
+            <div className="list-item">
+              <div>
+                <img style={{ width: 100 }} src={item.img_path} />
+              </div>
+              <div>
+                <div>{item.name}</div>
+                <div>{item.price}</div>
+                <div className="description">{item.description}</div>
+                <button>Add to cart</button>
+              </div>
+            </div>
+          ))
+        ) : (
+          <h1>No food item added</h1>
+        )}
       </div>
+      <Footer />
     </div>
   );
 };
