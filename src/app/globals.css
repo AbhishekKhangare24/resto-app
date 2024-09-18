@@ -1,4 +1,7 @@
 * {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
   font-family: Arial, Helvetica, sans-serif;
 }
 
@@ -92,14 +95,15 @@ table img {
   background-color: #fff;
 }
 
-.main-page-banner {
+.main-page-banner,
+.restaurant-page-banner {
   /* background-image: url("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRWeWsK8EyPAkads8aKlBa0aqWbMEEhE5SLdBDHC66OetnkAf4fmsr2Kri3_1xXLRWzs0s&usqp=CAU"); */
   background-color: rgb(0, 0, 0, 0.6);
   background-blend-mode: multiply;
   padding: 30px;
   height: 230px;
-  color: #fff;
   text-align: center;
+  color: #fff;
 }
 
 .main-page-banner .input-wrapper {
@@ -176,4 +180,8 @@ table img {
 
 .restaurant-wrapper .address {
   margin-left: 5px;
+}
+
+.restaurant-page-banner h1 {
+  font-size: 65px;
 }
