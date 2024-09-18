@@ -1,8 +1,9 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import CustomerHeader from "../_components/CustomerHeader";
 import Footer from "../_components/Footer";
 import { DELIVERY_CHARGES, TAX } from "../lib/constant";
+import { useRouter } from "next/navigation";
 
 const Page = () => {
   const [userStorage, setUserStorage] = useState(
@@ -12,14 +13,22 @@ const Page = () => {
     JSON.parse(localStorage.getItem("cart"))
   );
   const [total] = useState(() =>
-    cartStorage.length == 1
+    cartStorage?.length == 1
       ? cartStorage[0].price
-      : cartStorage.reduce((a, b) => {
+      : cartStorage?.reduce((a, b) => {
           return a.price + b.price;
         })
   );
 
   console.log(total);
+  const [removeCartData, setRemoveCartData] = useState(false);
+  const router = useRouter();
+
+  useEffect(() => {
+    if (!total) {
+      router.push("/");
+    }
+  }, [total]);
 
   const orderNow = async () => {
     let user_id = JSON.parse(localStorage.getItem("user"))._id;
@@ -44,6 +53,8 @@ const Page = () => {
     response = await response.json();
     if (response.success) {
       alert("order confirmed");
+      setRemoveCartData(true);
+      router.push("myprofile");
     } else {
       alert("order failed");
     }
@@ -51,7 +62,7 @@ const Page = () => {
 
   return (
     <div>
-      <CustomerHeader />
+      <CustomerHeader removeCartData={removeCartData} />
 
       <div className="total-wrapper">
         <div className="block-1">
