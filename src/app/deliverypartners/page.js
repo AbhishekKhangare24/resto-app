@@ -12,6 +12,32 @@ const Page = () => {
   const [address, setAddress] = useState("");
   const [mobile, setMobile] = useState("");
 
+  const handleSignUp = async () => {
+    console.log(name, mobile, password, confirmPassword, city, address);
+    let response = await fetch(
+      "http://localhost:3000/api/deliverypartners/signup",
+      {
+        method: "post",
+        body: JSON.stringify({
+          name,
+          mobile,
+          password,
+          city,
+          address,
+        }),
+      }
+    );
+    response = await response.json();
+    if (response.success) {
+      const { result } = response;
+      delete result.password;
+      localStorage.setItem("delivery", JSON.stringify(result));
+      alert("success");
+    } else {
+      alert("failed");
+    }
+  };
+
   return (
     <div>
       <h1>Delivery partner</h1>
@@ -108,7 +134,9 @@ const Page = () => {
           </div>
 
           <div className="input-wrapper">
-            <button className="button">Signup</button>
+            <button onClick={handleSignUp} className="button">
+              Signup
+            </button>
           </div>
         </div>
       </div>
