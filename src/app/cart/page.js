@@ -2,12 +2,21 @@
 import { useState } from "react";
 import CustomerHeader from "../_components/CustomerHeader";
 import Footer from "../_components/Footer";
+import { DELIVERY_CHARGES, TAX } from "../lib/constant";
 
 const page = () => {
   const [cartStorage, setCartStorage] = useState(
     JSON.parse(localStorage.getItem("cart"))
   );
+  const [total] = useState(() =>
+    cartStorage.length == 1
+      ? cartStorage[0].price
+      : cartStorage.reduce((a, b) => {
+          return a.price + b.price;
+        })
+  );
 
+  console.log(total);
   return (
     <div>
       <CustomerHeader />
@@ -32,6 +41,29 @@ const page = () => {
         ) : (
           <h1>No Food Items for this Restaurant</h1>
         )}
+      </div>
+      <div className="total-wrapper">
+        <div className="block-1">
+          <div className="row">
+            <span>Food Charges :</span>
+            <span>{total}</span>
+          </div>
+          <div className="row">
+            <span>Tax :</span>
+            <span>{total * (TAX / 100)}</span>
+          </div>
+          <div className="row">
+            <span>Delivery Charges :</span>
+            <span>{DELIVERY_CHARGES}</span>
+          </div>
+          <div className="row">
+            <span>Total Amount :</span>
+            <span>{total + DELIVERY_CHARGES + total * (TAX / 100)}</span>
+          </div>
+        </div>
+        <div className="block-2">
+          <button>Order Now</button>
+        </div>
       </div>
       <Footer />
     </div>
