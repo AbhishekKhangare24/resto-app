@@ -77,7 +77,7 @@ const CustomerHeader = (props) => {
         {user ? (
           <>
             <li>
-              <Link href="/">{user?.name}</Link>
+              <Link href="/myprofile">{user?.name}</Link>
             </li>
             <li>
               <button onClick={logout}>Logout</button>

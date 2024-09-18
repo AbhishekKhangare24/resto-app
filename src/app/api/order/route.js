@@ -36,5 +36,5 @@ export async function GET(request) {
     result = restoData;
     success = true;
   }
-  return NextResponse.json({ result });
+  return NextResponse.json({ result, success });
 }
