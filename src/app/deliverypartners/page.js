@@ -38,6 +38,28 @@ const Page = () => {
     }
   };
 
+  const loginHandle = async () => {
+    let response = await fetch(
+      "http://localhost:3000/api/deliverypartners/login",
+      {
+        method: "post",
+        body: JSON.stringify({
+          mobile: loginMobile,
+          password: loginPassword,
+        }),
+      }
+    );
+    response = await response.json();
+    if (response.success) {
+      const { result } = response;
+      delete result.password;
+      localStorage.setItem("delivery", JSON.stringify(result));
+      alert("success");
+    } else {
+      alert("failed to login. Please try again with valid mobile and password");
+    }
+  };
+
   return (
     <div>
       <h1>Delivery partner</h1>
@@ -66,7 +88,9 @@ const Page = () => {
           </div>
 
           <div className="input-wrapper">
-            <button className="button">Login</button>
+            <button onClick={() => loginHandle()} className="button">
+              Login
+            </button>
           </div>
         </div>
 
