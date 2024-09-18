@@ -88,7 +88,7 @@ const page = (props) => {
             </div>
           ))
         ) : (
-          <h1>No food item added</h1>
+          <h1>No Food Items for this Restaurant</h1>
         )}
       </div>
       <Footer />
