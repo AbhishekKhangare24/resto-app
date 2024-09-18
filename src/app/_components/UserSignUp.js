@@ -1,5 +1,6 @@
 "use client";
 
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 const UserSignUp = () => {
@@ -10,6 +11,7 @@ const UserSignUp = () => {
   const [city, setCity] = useState("");
   const [address, setAddress] = useState("");
   const [mobile, setMobile] = useState("");
+  const router = useRouter();
 
   const handleSignUp = async () => {
     console.log(name, email, password, confirmPassword, city, address, mobile);
@@ -27,6 +29,10 @@ const UserSignUp = () => {
     response = await response.json();
     if (response.success) {
       alert("user signup done");
+      const { result } = response;
+      delete result.password;
+      localStorage.setItem("user", JSON.stringify(result));
+      router.push("/");
     } else {
       alert("failed");
     }
