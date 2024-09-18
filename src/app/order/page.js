@@ -32,11 +32,26 @@ const Page = () => {
 
   const orderNow = async () => {
     let user_id = JSON.parse(localStorage.getItem("user"))._id;
+    let city = JSON.parse(localStorage.getItem("user")).city;
     let cart = JSON.parse(localStorage.getItem("cart"));
     let foodItemIds = cart.map((item) => item._id).toString();
-    let deliveryBoy_id = "66eaa59d6ccd0b734db24cbf";
-    let resto_id = cart[0].resto_id;
+    let deliveryBoyResponse = await fetch(
+      `http://localhost:3000/api/deliverypartners/${city}`
+    );
+    deliveryBoyResponse = await deliveryBoyResponse.json();
+    console.log(deliveryBoyResponse);
+    let deliveryBoyIds = deliveryBoyResponse.result.map((item) => item._id);
+    console.log(deliveryBoyIds);
+    let deliveryBoy_id =
+      deliveryBoyIds[Math.floor(Math.random() * deliveryBoyIds.length)];
+    console.log(deliveryBoy_id);
 
+    if (!deliveryBoyIds) {
+      alert("delivery partner no available");
+      return false;
+    }
+
+    let resto_id = cart[0].resto_id;
     let collection = {
       user_id,
       resto_id,
