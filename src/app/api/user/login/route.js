@@ -15,6 +15,5 @@ export async function POST(request) {
   if (result) {
     success = true;
   }
-
   return NextResponse.json({ result, success });
 }
